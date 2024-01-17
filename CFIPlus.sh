@@ -83,11 +83,11 @@ if ! command -v mmdblookup &> /dev/null; then
 fi
 
 # 检测GeoLite2-Country.mmdb文件是否存在
-if [ ! -f "/GeoLite2-Country.mmdb" ]; then
-    echo "The file /GeoLite2-Country.mmdb does not exist. downloading..."
+if [ ! -f "GeoLite2-Country.mmdb" ]; then
+    echo "The file GeoLite2-Country.mmdb does not exist. downloading..."
     
     # 使用curl命令下载文件
-    curl -L -o /GeoLite2-Country.mmdb "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
+    curl -L -o "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
     
     # 检查下载是否成功
     if [ $? -eq 0 ]; then
@@ -252,7 +252,7 @@ fi
 # 逐行处理IPlus.txt文件
 while read -r line; do
     ip=$(echo $line | cut -d ' ' -f 1)  # 提取IP地址部分
-	result=$(mmdblookup --file /GeoLite2-Country.mmdb --ip $ip country iso_code)
+	result=$(mmdblookup --file GeoLite2-Country.mmdb --ip $ip country iso_code)
 	country_code=$(echo $result | awk -F '"' '{print $2}')
 	echo $ip >> "ip/${country_code}-${port}.txt"  # 写入对应的国家文件
 done < IPlus.txt
