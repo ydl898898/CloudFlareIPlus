@@ -27,10 +27,14 @@ jobs:
         if [ -f "IPlus.txt" ] ; then
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add cp IPlus.txt US.txt
+          git add IPlus.txt US.txt
           git commit -m "Update files"
           git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/CloudFlareIPlus.git
         else
           echo "IPlus.txt 文件不存在。跳过工作流程。"
           exit 0
         fi
+    - name: 检查并上传文件
+      run: |
+       cd ip
+       ls 
