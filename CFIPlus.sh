@@ -83,11 +83,11 @@ if ! command -v mmdblookup &> /dev/null; then
 fi
 
 # 检测GeoLite2-Country.mmdb文件是否存在
-if [ ! -f "GeoLite2-Country.mmdb" ]; then
+if [ ! -f "./GeoLite2-Country.mmdb" ]; then
     echo "The file GeoLite2-Country.mmdb does not exist. downloading..."
     
     # 使用curl命令下载文件
-    curl -L -o "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
+    curl -L -o "GeoLite2-Country.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
     
     # 检查下载是否成功
     if [ $? -eq 0 ]; then
