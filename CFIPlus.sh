@@ -1,6 +1,5 @@
 #!/bin/bash
 export LANG=zh_CN.UTF-8
-proxygithub="https://mirror.ghproxy.com/"
 port=443
 asn=213230
 ###############################################################以下脚本内容，勿动#######################################################################
@@ -88,7 +87,7 @@ if [ ! -f "/usr/share/GeoIP/GeoLite2-Country.mmdb" ]; then
     echo "The file /usr/share/GeoIP/GeoLite2-Country.mmdb does not exist. downloading..."
     
     # 使用curl命令下载文件
-    curl -L -o /usr/share/GeoIP/GeoLite2-Country.mmdb "${proxygithub}https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
+    curl -L -o /usr/share/GeoIP/GeoLite2-Country.mmdb "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
     
     # 检查下载是否成功
     if [ $? -eq 0 ]; then
@@ -101,13 +100,13 @@ fi
 
 # 如果当前目录下不存在Pscan，则自动下载
 if [ ! -f "./Pscan" ]; then
-    curl -k -L "${proxygithub}https://raw.githubusercontent.com/cmliu/CloudFlareIPlus/main/tools/Pscan_linux_$(archAffix)" -o "Pscan"
+    curl -k -L "https://raw.githubusercontent.com/cmliu/CloudFlareIPlus/main/tools/Pscan_linux_$(archAffix)" -o "Pscan"
 	chmod +x Pscan
 fi
 
 # 如果当前目录下不存在Piplist，则自动下载
 if [ ! -f "./Piplist" ]; then
-    curl -k -L "${proxygithub}https://raw.githubusercontent.com/cmliu/CloudFlareIPlus/main/tools/Piplist_linux_$(archAffix)" -o "Piplist"
+    curl -k -L "https://raw.githubusercontent.com/cmliu/CloudFlareIPlus/main/tools/Piplist_linux_$(archAffix)" -o "Piplist"
 	chmod +x Piplist
 fi
 
