@@ -29,7 +29,7 @@ jobs:
           git config --global user.email "action@github.com"
           git add cp IPlus.txt US.txt
           git commit -m "Update files"
-          git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/Action-DDNS.git
+          git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/CloudFlareIPlus.git
         else
           echo "IPlus.txt 文件不存在。跳过工作流程。"
           exit 0
