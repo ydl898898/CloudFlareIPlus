@@ -1,0 +1,81 @@
+name: ProxyIP地址维护
+
+on:
+  schedule:
+    - cron: '30 23 * * *' # 中国的标准时间是UTC+8，因此早上7点半对应的UTC时间是23:30
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 安装 curl 和 jq
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl jq
+
+    - name: 加载当前的 GitHub 库
+      uses: actions/checkout@v2
+
+    - name: 执行脚本
+      run: |
+        cp US-443.txt DDNS/
+        cp ALIYUN-443.txt DDNS/
+        cd DDNS
+        chmod +x CloudflareST speed_AIO.sh
+        ./speed_AIO.sh us 5
+        ./speed_AIO.sh aliyun 
+    - name: 检查并同步文件
+      run: |
+        if [ -f "US-443.csv" ] ; then
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add DDNS/US-443.csv DDNS/ALIYUN-443.csv
+          git commit -m "Update files"
+          git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/Action-DDNS.git
+        else
+          echo "US-443.csv 文件不存在。跳过工作流程。"
+          exit 0
+        fi
+
+    - name: 执行测速推送
+      run: |
+        # 读取文件内容并提取第一条和第二条结果的IP地址和下载速度
+        us_data=$(awk -F',' 'NR>=2 && NR<=3 {print $1, $6}' DDNS/US-443.csv)
+        aliyun_data=$(awk -F',' 'NR>=2 && NR<=3 {print $1, $6}' DDNS/ALIYUN-443.csv)
+        echo "$us_data" # 输出测试结果
+        echo "$aliyun_data" # 输出测试结果
+
+        
+        # 分析提取的数据并生成要发送的文本消息
+        us_ip=$(echo "$us_data" | awk 'NR==1 {print $1}')
+        us_speed=$(echo "$us_data" | awk 'NR==1 {print $2}')
+        us2_ip=$(echo "$us_data" | awk 'NR==2 {print $1}')
+        us2_speed=$(echo "$us_data" | awk 'NR==2 {print $2}')
+        aliyun_ip=$(echo "$aliyun_data" | awk 'NR==1 {print $1}')
+        aliyun_speed=$(echo "$aliyun_data" | awk 'NR==1 {print $2}')
+        aliyun2_ip=$(echo "$aliyun_data" | awk 'NR==2 {print $1}')
+        aliyun2_speed=$(echo "$aliyun_data" | awk 'NR==2 {print $2}')
+        
+        ip_sections_us=(${us_ip//./ }) # 分割IP为数组
+        ip_sections_us2=(${us2_ip//./ }) # 分割IP为数组
+        ip_sections_aliyun=(${aliyun_ip//./ }) # 分割IP为数组
+        ip_sections_aliyun2=(${aliyun2_ip//./ }) # 分割IP为数组
+        
+        us_ip="${ip_sections_us[0]}.${ip_sections_us[1]}.*.${ip_sections_us[3]}"
+        us2_ip="${ip_sections_us2[0]}.${ip_sections_us2[1]}.*.${ip_sections_us2[3]}"
+        aliyun_ip="${ip_sections_aliyun[0]}.${ip_sections_aliyun[1]}.*.${ip_sections_aliyun[3]}"
+        aliyun2_ip="${ip_sections_aliyun2[0]}.${ip_sections_aliyun2[1]}.*.${ip_sections_aliyun2[3]}"
+        message="ProxyIP代理域名维护完成！
+        IP地区:US
+        us.git.cloudns.org 更新成功:$us_ip 速度:${us_speed}MB/s
+        us.git.cloudns.org 更新成功:$us2_ip 速度:${us2_speed}MB/s
+        IP地区:Aliyun
+        aliyun.git.cloudns.org 更新成功:$aliyun_ip 速度:${aliyun_speed}MB/s
+        aliyun.git.cloudns.org 更新成功:$aliyun2_ip 速度:${aliyun2_speed}MB/s
+        再次重申！该域名只能作为ProxyIP代理域名使用，作为优选域名并不会起到加速的效果，其效果仅相当于官方直连。"
+        
+        
+        # 使用 wget 通过 GET 请求发送消息到 Telegram API
+        wget -qO- "https://api.telegram.org/bot6084578580:AAH94yAZilfTmgGacPB8gLap8F3oxc_nP08/sendMessage?chat_id=-1001808042635&text=$message"
