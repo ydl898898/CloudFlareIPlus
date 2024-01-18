@@ -26,13 +26,13 @@ jobs:
     - name: 检查并同步文件
       run: |
         cd ip
-        ls -al  # 确认当前目录下包含 DE-443.txt 和 US-443.txt 文件
-        if [ -f "DE-443.txt" ] && [ -f "US-443.txt" ]; then
+        ls -al *.txt  # 确认当前目录下包含需要上传的 .txt 文件
+        if [ -n "$(ls -A *.txt)" ]; then
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add DE-443.txt US-443.txt
-          git commit -m "Upload DE-443.txt and US-443.txt"
+          git add *.txt
+          git commit -m "Update txt files"
           git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/CloudFlareIPlus.git
         else
-          echo "DE-443.txt 或 US-443.txt 文件不存在。跳过上传。"
+         echo "没有找到 .txt 文件。跳过上传。"
         fi
