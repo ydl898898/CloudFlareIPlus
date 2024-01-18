@@ -1,5 +1,6 @@
 # CloudFlareIPlus
-自动获取 AS209242 CIDR 并验证最新 CloudFlareCDN IP
+自动获取 ANS CIDR 并验证最新 CloudFlareCDN IP
+请在CFIPlus.sh中修给ans代码
 
 ## 用法
 推荐在 CloudflareSpeedTest 目录下执行脚本，方便后续 CloudflareSpeedTest 直接读取 IPlus.txt 测速。
