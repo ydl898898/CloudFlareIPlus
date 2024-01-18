@@ -1,7 +1,7 @@
 #!/bin/bash
 export LANG=zh_CN.UTF-8
 port=443
-asn=213230
+asn=45102
 ###############################################################以下脚本内容，勿动#######################################################################
 if [ -n "$1" ]; then 
     port="$1"
@@ -221,7 +221,7 @@ for attempt in {1..3}; do
 done
 
   #echo "文件大小: $file_size 字节"
- if [ $file_size -le 1024 ]; then
+ if [ $file_size -le 0 ]; then
   echo "获取 AS${asn} 的 CIDR 失败。"
   exit 1
  fi
