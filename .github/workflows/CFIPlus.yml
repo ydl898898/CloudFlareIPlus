@@ -24,6 +24,8 @@ jobs:
         ./CFIPlus.sh
     - name: 检查并同步文件
       run: |
+        cd ip
+        ls -al
         if [ -f "IPlus.txt" ] ; then
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
