@@ -221,9 +221,9 @@ for attempt in {1..3}; do
 done
 
   #echo "文件大小: $file_size 字节"
-if [ $file_size -le 1024 ]; then
-  echo "获取 AS${asn} 的 CIDR 失败。"
-  exit 1
+#if [ $file_size -le 1024 ]; then
+#  echo "获取 AS${asn} 的 CIDR 失败。"
+#  exit 1
 fi
 
 # 检测AS${asn}ip.txt是否存在
