@@ -221,7 +221,7 @@ for attempt in {1..3}; do
 done
 
   #echo "文件大小: $file_size 字节"
- if [ $file_size -le 100 ]; then
+ if [ $file_size -le 0 ]; then
   echo "获取 AS${asn} 的 CIDR 失败。"
   exit 1
  fi
