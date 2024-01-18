@@ -22,6 +22,7 @@ jobs:
       run: |
         chmod +x CFIPlus.sh
         ./CFIPlus.sh
+
     - name: 检查并同步文件
       run: |
         cd ip
@@ -36,7 +37,13 @@ jobs:
           echo "IPlus.txt 文件不存在。跳过工作流程。"
           exit 0
         fi
-    - name: 检查并上传文件
+
+    - name: 上传 DE-443.txt 和 US-443.txt
       run: |
-       cd ip
-       ls 
+        if [ -f "DE-443.txt" ] && [ -f "US-443.txt" ]; then
+          git add DE-443.txt US-443.txt
+          git commit -m "Upload DE-443.txt and US-443.txt"
+          git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/CloudFlareIPlus.git
+        else
+          echo "DE-443.txt 或 US-443.txt 文件不存在。跳过上传。"
+        fi
