@@ -111,7 +111,7 @@ if [ ! -f "./Piplist" ]; then
 fi
 
 file_path="AS${asn}.txt"
-url="https://asn2cidr.ssrc.cf/AS${asn}"
+url="https://ans.gitgoogle.com/AS${asn}"
 
 upcidr2ip() {
 	curl -k -L "$url" -o "$file_path"
