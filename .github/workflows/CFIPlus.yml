@@ -1,8 +1,8 @@
 name: ProxyIP地址维护
 
 on:
-  schedule:
-    - cron: '30 23 * * *' # 中国的标准时间是UTC+8，因此早上7点半对应的UTC时间是23:30
+  #schedule:
+  #  - cron: '30 23 * * *' # 中国的标准时间是UTC+8，因此早上7点半对应的UTC时间是23:30
   workflow_dispatch:  # 手动触发
 
 jobs:
