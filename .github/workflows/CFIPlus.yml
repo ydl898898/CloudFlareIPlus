@@ -31,7 +31,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add *.txt
-          git commit -m "Update txt files"
+          git commit -m "更新 txt files"
           git push https://${{ secrets.GH_TOKEN }}@github.com/ydl898898/CloudFlareIPlus.git
         else
          echo "没有找到 .txt 文件。跳过上传。"
